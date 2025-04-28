@@ -5,18 +5,20 @@
 
     # The terminal is running in the directory with the model already
      # cd /path/to/model_directory
-     # ./runModel.sh "my prompt"
+     # ./runModel.sh R "my prompt!"
+      # This next exmple can even work! The console will ask for you to type your prompt
+     # ./runModel.sh R
     #
 
     # The paths are specified:
-     # ./llama_deploy.sh -i "my_config.txt" -p "A Test prompt for simple usage"
-     # ./llama_deploy.sh -i "./HuiHui_32B_Ab.config" -s "./sys.txt" -c ""./chatlog.txt" -p "A prompt for a full usage exmaple"
+     # ./llama_deploy.sh R -i "my_config.txt" -p "A Test prompt for simple usage"
+     # ./llama_deploy.sh R -i "./Example_1.config" -s "./custom_sys.txt" -c ""./chatlog_1.txt" -p "A prompt for a full usage exmaple"
     #
 #
 
 ### Global Variables {{{
 
-    CONFIG_FILE="./inits/HuiHui_32B_Ab.config"
+    CONFIG_FILE="./inits/Example_1.config"
     CHAT_LOG_FILE="./chatlog.txt"
     
     user_prompt="null"
