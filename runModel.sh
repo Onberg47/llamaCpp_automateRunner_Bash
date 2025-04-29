@@ -5,20 +5,18 @@
 
     # The terminal is running in the directory with the model already
      # cd /path/to/model_directory
-     # ./runModel.sh R "my prompt!"
-      # This next exmple can even work! The console will ask for you to type your prompt
-     # ./runModel.sh R
+     # ./runModel.sh "my prompt"
     #
 
     # The paths are specified:
-     # ./llama_deploy.sh R -i "my_config.txt" -p "A Test prompt for simple usage"
-     # ./llama_deploy.sh R -i "./Example_1.config" -s "./custom_sys.txt" -c ""./chatlog_1.txt" -p "A prompt for a full usage exmaple"
+     # ./llama_deploy.sh -i "my_config.txt" -p "A Test prompt for simple usage"
+     # ./llama_deploy.sh -i "./Example_1" -s "./custom-sys.txt" -c ""./chatlog.txt" -p "A prompt for a full usage exmaple"
     #
 #
 
 ### Global Variables {{{
 
-    CONFIG_FILE="./inits/Example_1.config"
+    CONFIG_FILE="./inits/Example.config"
     CHAT_LOG_FILE="./chatlog.txt"
     
     user_prompt="null"
@@ -42,7 +40,7 @@ runPrompt() {
     prompt="${chat_history}" # The new prompt is already baked into the chat-log
 
     #echo -e "Final Prompt:\n${prompt}" # Debug #
-    llama-cli -m "$model_path" -t "$threads" -ngl "$GPU_offload" --temp "$temperature" -c "$context_leng" -sys "$sys_prompt" -p "$prompt" --interactive-first --color | tee "./temp.txt" # Run inference
+    llama-cli -m "$model_path" -t "$threads" -ngl "$GPU_offload" --temp "$temperature" -c "$context_leng" -sys "$sys_prompt" -p "$prompt" --escape --color | tee "./temp.txt" # Run inference
 
     # Appends response to chat-log
      # If the variable `logicPhrase` is present in the .config file then only after the phrase of it's value is found will the response be recorded
@@ -57,7 +55,7 @@ runPrompt() {
 } # runPrompt()
 
 # Starts the given init.config as a server
-runPrompt() {
+runServer() {
     llama-server -m "$model_path" -t "$threads" -ngl "$GPU_offload" --temp "$temperature" -c "$context_leng" # Launch inference server
 } # runServer()
 
@@ -132,15 +130,6 @@ runPrompt() {
             exit 2
         }
 
-        if [ "$user_prompt" == "null" && f "./prompt.txt" ]; then
-            user_prompt="$(cat "./prompt.txt")"
-
-            else
-                # If there is no prompt passed then ask for it
-                    # This can maybe clean up the usage, only specifying config params then the command asks for prompts. Would make it easy to run in a loop
-                read -p "Enter Prompt: " user_prompt
-        fi
-
     ## }}
 
     # Checks what mode the augs are for
@@ -149,6 +138,13 @@ runPrompt() {
         #
         R|run)
             #
+            if [ "$user_prompt" == "null" && f "./prompt.txt" ]; then
+                user_prompt="$(cat "./prompt.txt")"
+                else
+                    # If there is no prompt passed then ask for it
+                        # This can maybe clean up the usage, only specifying config params then the command asks for prompts. Would make it easy to run in a loop
+                    read -p "Enter Prompt: " user_prompt
+            fi
             runPrompt
         ;;
 
