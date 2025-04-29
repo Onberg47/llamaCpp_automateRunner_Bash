@@ -23,7 +23,7 @@
     sys_prompt_path="./sys.txt" # Is sourced from config file
 
     # Tempory, will do this better last
-    USAGE="Usage: $(basename $0) [-i path/init.config] [-s path/Chatlog.txt] [-c path/Chatlog.txt] [-p \"prompt\"]"
+    USAGE="Usage: $(basename $0) [-i path/init.config] [-s path/Chatlog.txt] [-c path/Chatlog.txt] [-p \"prompt\"] { R|run | S|server}"
 
 ### }}}
 
