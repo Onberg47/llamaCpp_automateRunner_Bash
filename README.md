@@ -49,13 +49,12 @@ Once you have a init.config file ready only then can you use the script.
 Creating a system-prompt, chatlog and prompt file are all optional.
 
 ```.sh
-Usage: ./runModel.sh
-R|run                      | Runs in the CLI
+Usage: ./runModel.sh [args] {Operation}
   [-i path/init.config]    | The model init file to load (required)
   [-s path/sys.txt]        | System-prompt source file
   [-c path/Chatlog.txt]    | The chat history file to load and write to
   [-p \"prompt\"]          | Initial prompt. If blank then a prompt.txt file will be loaded if present. If not then the console will as for a prompt
 
-S|server                   | Runs the built-in server loaded with the chosen model
-  [-i path/init.config]    | The model init file to load (required)
+  R|run                      | Runs in the CLI
+  S|server                   | Runs the built-in server loaded with the chosen model
 ```
