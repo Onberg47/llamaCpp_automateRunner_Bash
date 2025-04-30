@@ -5,18 +5,18 @@
 
     # The terminal is running in the directory with the model already
      # cd /path/to/model_directory
-     # ./runModel.sh "my prompt"
+     # ./runModel.sh "my prompt" R
     #
 
     # The paths are specified:
-     # ./llama_deploy.sh -i "my_config.txt" -p "A Test prompt for simple usage"
-     # ./llama_deploy.sh -i "./Example_1" -s "./custom-sys.txt" -c ""./chatlog.txt" -p "A prompt for a full usage exmaple"
+     # ./llama_deploy.sh -i "my_config.txt" -p "A Test prompt for simple usage" R
+     # ./llama_deploy.sh -i "./Example_1" -s "./custom-sys.txt" -c ""./chatlog.txt" -p "A prompt for a full usage exmaple" R
     #
 #
 
 ### Global Variables {{{
 
-    CONFIG_FILE="./inits/Example.config"
+    CONFIG_FILE="./inits/Default.config"
     CHAT_LOG_FILE="./chatlog.txt"
     
     user_prompt="null"
@@ -38,9 +38,8 @@ runPrompt() {
 
     # Format for Qwen/DeepSeek
     prompt="${chat_history}" # The new prompt is already baked into the chat-log
-
-    #echo -e "Final Prompt:\n${prompt}" # Debug #
-    llama-cli -m "$model_path" -t "$threads" -ngl "$GPU_offload" --temp "$temperature" -c "$context_leng" -sys "$sys_prompt" -p "$prompt" --escape --color | tee "./temp.txt" # Run inference
+    #-st
+    llama-cli -m "$model_path" -t "$threads" -ngl "$GPU_offload" --temp "$temperature" -c "$context_leng" -ub "$evaluativeBatch" -no-cnv -sys "$sys_prompt" -p "$prompt" --color | tee "./temp.txt" # Run inference
 
     # Appends response to chat-log
      # If the variable `logicPhrase` is present in the .config file then only after the phrase of it's value is found will the response be recorded
@@ -56,7 +55,7 @@ runPrompt() {
 
 # Starts the given init.config as a server
 runServer() {
-    llama-server -m "$model_path" -t "$threads" -ngl "$GPU_offload" --temp "$temperature" -c "$context_leng" # Launch inference server
+    llama-server -m "$model_path" -t "$threads" -ngl "$GPU_offload" --temp "$temperature" -c "$context_leng" -b "$evaluativeBatch" # Launch inference server
 } # runServer()
 
 
@@ -94,11 +93,6 @@ runServer() {
 
         
         ### other ###
-        h)
-            echo "$USAGE"
-            exit 0
-            ;;
-
         :)
             echo -e "option requires an argument.\n$USAGE"
             exit 1
@@ -156,7 +150,7 @@ runServer() {
 
         # redundant?
         *)
-            echo "Switch $1 : $USAGE"
+            echo "$USAGE"
         ;;
     esac # case $1
 
